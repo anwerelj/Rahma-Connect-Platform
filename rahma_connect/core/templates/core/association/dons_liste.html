@@ -1,0 +1,21 @@
+﻿{% extends "core/common/base.html" %}
+{% block title %}Dons disponibles{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Dons disponibles</h1><p class="muted">Recherchez par catégorie ou par proximité (BF9).</p></div></div>
+<form class="card filters" method="get">
+  <input class="input" type="search" name="q" value="{{ q }}" placeholder="Rechercher un don…">
+  <select class="input" name="categorie">
+    <option value="">Toutes les catégories</option>
+    {% for c in categories %}<option value="{{ c.id }}" {% if selected_cat == c.id|stringformat:"s" %}selected{% endif %}>{{ c.nom }}</option>{% endfor %}
+  </select>
+  <select class="input" name="tri">
+    <option value="recent" {% if sort == "recent" %}selected{% endif %}>Plus récents</option>
+    <option value="distance" {% if sort == "distance" %}selected{% endif %}>Plus proches</option>
+  </select>
+  <button class="btn btn-primary" type="submit">Filtrer</button>
+</form>
+<div class="cards">
+  {% for d in donations %}{% include "core/partials/donation_card.html" %}
+  {% empty %}<p class="empty">Aucun don ne correspond à votre recherche.</p>{% endfor %}
+</div>
+{% endblock %}

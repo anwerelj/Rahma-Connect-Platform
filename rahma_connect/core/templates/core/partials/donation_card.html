@@ -1,0 +1,23 @@
+{% load ui %}
+<article class="card don-card">
+  <div class="don-body">
+
+    <div class="row-between">
+      <span class="tag">{{ d.cat_nom }}</span>
+      {{ d.statut|badge:"donation" }}
+    </div>
+
+    <h3><a href="{% url 'don_detail' d.id %}">{{ d.titre }}</a></h3>
+    <p class="muted">{{ d.description|truncatechars:80 }}</p>
+
+    <ul class="meta">
+      <li>{{ d.localisation }} · {{ d.distance_km }} km</li>
+      <li>Quantité : {{ d.quantite }}</li>
+      <li>État : {{ d.etat }}</li>
+      {% if d.date_limite %}
+      <li class="warn">Avant le {{ d.date_limite|date:"d/m/Y" }}</li>
+      {% endif %}
+    </ul>
+
+  </div>
+</article>

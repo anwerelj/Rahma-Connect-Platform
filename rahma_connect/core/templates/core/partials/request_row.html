@@ -1,0 +1,14 @@
+{% load ui %}
+<div class="list-item">
+
+  <span class="tag">{{ r.cat_nom }}</span>
+
+  <div class="grow">
+    <strong><a href="{% url 'demande_detail' r.id %}">{{ r.titre }}</a></strong>
+    <small class="muted block">{{ r.beneficiaire }} · {{ r.date_creation|date:"d/m/Y" }}</small>
+  </div>
+
+  {{ r.priorite|badge:"priority" }}
+  {{ r.statut|badge:"request" }}
+
+</div>

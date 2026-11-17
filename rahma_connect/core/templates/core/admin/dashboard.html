@@ -1,0 +1,10 @@
+﻿{% extends "core/common/base.html" %}
+{% block title %}Tableau de bord{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Administration</h1><p class="muted">Gestion des comptes et suivi des demandes urgentes.</p></div></div>
+{% include "core/partials/stat_cards.html" %}
+<div class="card">
+  <h2>Demandes urgentes</h2>
+  <div class="list">{% for r in urgent %}{% include "core/partials/request_row.html" %}{% empty %}<p class="empty">Aucune demande urgente.</p>{% endfor %}</div>
+</div>
+{% endblock %}

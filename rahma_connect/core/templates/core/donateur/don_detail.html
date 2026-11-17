@@ -1,0 +1,40 @@
+﻿{% extends "core/common/base.html" %}
+{% load ui %}
+{% block title %}{{ don.titre }}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="crumb"><a href="javascript:history.back()">Retour</a></p><h1>{{ don.titre }}</h1><p class="muted"><code>{{ don.ref }}</code> · {{ don.cat_nom }}</p></div>{{ don.statut|badge:"donation" }}</div>
+
+<div class="card">{% stepper "donation" don.statut %}</div>
+
+<div class="card">
+    <h2>Détails</h2>
+    <p>{{ don.description }}</p>
+    <dl class="dl">
+      <dt>Quantité</dt><dd>{{ don.quantite }}</dd>
+      <dt>État</dt><dd>{{ don.etat }}</dd>
+      <dt>Localisation</dt><dd>{{ don.localisation }} ({{ don.distance_km }} km)</dd>
+      <dt>Donateur</dt><dd>{{ don.donateur }}</dd>
+      <dt>Publié le</dt><dd>{{ don.date_publication|date:"d/m/Y" }}</dd>
+      {% if don.date_limite %}<dt>Date limite</dt><dd class="warn">{{ don.date_limite|date:"d/m/Y" }}</dd>{% endif %}
+    </dl>
+    <div class="actions">
+      {% if role == "association" or role == "admin" %}
+        {% if don.statut == "DISPONIBLE" %}{% include "core/partials/status_button.html" with kind="donation" pk=don.id code="RESERVE" label="Réserver ce don" %}{% endif %}
+        {% if don.statut == "COLLECTE" %}{% include "core/partials/status_button.html" with kind="donation" pk=don.id code="RECU" label="Confirmer la réception" %}{% endif %}
+        {% if don.statut == "RECU" %}{% include "core/partials/status_button.html" with kind="donation" pk=don.id code="DISTRIBUE" label="Marquer comme distribué" %}{% endif %}
+      {% endif %}
+      {% if role == "donateur" or role == "admin" %}
+        {% if don.statut == "RESERVE" %}{% include "core/partials/status_button.html" with kind="donation" pk=don.id code="COLLECTE" label="Confirmer la remise du don" %}{% endif %}
+        {% if don.statut == "DISPONIBLE" %}{% include "core/partials/status_button.html" with kind="donation" pk=don.id code="ANNULE" label="Annuler le don" cls="btn-danger" %}{% endif %}
+      {% endif %}
+    </div>
+</div>
+
+<div class="card">
+  <h2>Historique des statuts</h2>
+  <ul class="timeline">
+    {% for h in history %}<li><span class="t-dot"></span><div>{{ h.statut|badge:"donation" }}<small class="muted block">{{ h.date|date:"d/m/Y" }}</small></div></li>
+    {% empty %}<li><div class="muted">Aucun historique.</div></li>{% endfor %}
+  </ul>
+</div>
+{% endblock %}

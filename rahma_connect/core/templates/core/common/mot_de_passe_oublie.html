@@ -1,0 +1,23 @@
+{% extends "core/common/base.html" %}
+{% block title %}Mot de passe oublié{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="card auth-card">
+    <h1>Mot de passe oublié</h1>
+    <p class="muted small">Saisissez l'adresse e-mail de votre compte. Un lien de réinitialisation vous sera envoyé par e-mail (Mailtrap).</p>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="flash flash-error">{{ form.non_field_errors }}</div>
+      {% endif %}
+      {% for field in form %}
+        {% include "core/partials/field.html" %}
+      {% endfor %}
+      <button class="btn btn-primary btn-block" type="submit">Envoyer le lien de réinitialisation</button>
+    </form>
+    <p class="muted center small" style="margin-top: 1.2rem;">
+      <a href="{% url 'login' %}">← Retour à la connexion</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

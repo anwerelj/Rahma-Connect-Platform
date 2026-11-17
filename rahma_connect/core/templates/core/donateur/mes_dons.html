@@ -1,0 +1,26 @@
+﻿{% extends "core/common/base.html" %}
+{% load ui %}
+{% block title %}Mes dons{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Mes dons</h1><p class="muted">Suivez le statut de chaque don.</p></div>
+  <a class="btn btn-primary" href="{% url 'don_nouveau' %}">Publier un don</a></div>
+<div class="chips">
+  <a class="chip {% if not status_filter %}on{% endif %}" href="{% url 'mes_dons' %}">Tous</a>
+  {% for code, info in statuses.items %}<a class="chip {% if status_filter == code %}on{% endif %}" href="?statut={{ code }}">{{ info.0 }}</a>{% endfor %}
+</div>
+<div class="card table-wrap">
+  <table class="table">
+    <thead><tr><th>Don</th><th>Référence</th><th>Quantité</th><th>Publié le</th><th>Statut</th><th></th></tr></thead>
+    <tbody>
+    {% for d in donations %}
+      <tr>
+        <td><strong>{{ d.titre }}</strong><small class="muted block">{{ d.cat_nom }}</small></td>
+        <td><code>{{ d.ref }}</code></td><td>{{ d.quantite }}</td><td>{{ d.date_publication|date:"d/m/Y" }}</td>
+        <td>{{ d.statut|badge:"donation" }}</td>
+        <td class="right"><a class="btn btn-soft btn-sm" href="{% url 'don_detail' d.id %}">Détails</a></td>
+      </tr>
+    {% empty %}<tr><td colspan="6" class="empty">Aucun don.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+﻿{% extends "core/common/base.html" %}
+{% block title %}Associations à vérifier{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Associations</h1><p class="muted">Les associations inscrites sur la plateforme.</p></div></div>
+<div class="card list">
+  {% for a in items %}
+    <div class="list-item">
+      <div class="grow"><strong>{{ a.nom }}</strong><small class="muted block">{{ a.ville }} · Inscrite le {{ a.date_inscription|date:"d/m/Y" }}</small></div>
+    </div>
+  {% empty %}<p class="empty">Aucune association inscrite.</p>{% endfor %}
+</div>
+{% endblock %}

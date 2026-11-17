@@ -1,0 +1,22 @@
+﻿{% extends "core/common/base.html" %}
+{% load ui %}
+{% block title %}Mission #{{ m.id }}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="crumb"><a href="{% url 'missions' %}">← Missions</a></p><h1>Mission #{{ m.id }} · {{ m.don.titre }}</h1><p class="muted">Don <code>{{ m.don.ref }}</code></p></div>{{ m.statut|badge:"delivery" }}</div>
+<div class="card">{% stepper "delivery" m.statut %}</div>
+<div class="grid-2">
+  <div class="card">
+    <h2>Itinéraire</h2>
+    <ul class="route">
+      <li><div><strong>Collecte</strong><small class="muted block">{{ m.point_collecte }}</small></div></li>
+      <li><div><strong>Livraison</strong><small class="muted block">{{ m.point_livraison }}</small></div></li>
+    </ul>
+    <p class="muted">{{ m.distance_km }} km · {{ m.type_livreur }}</p>
+    <div class="actions">
+      {% if next_step %}
+        {% include "core/partials/status_button.html" with kind="delivery" pk=m.id code=next_step.0 label=next_step.1 %}
+      {% else %}<span class="badge badge-purple">Mission terminée</span>{% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

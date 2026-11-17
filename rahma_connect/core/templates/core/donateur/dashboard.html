@@ -1,0 +1,17 @@
+﻿{% extends "core/common/base.html" %}
+{% load ui %}
+{% block title %}Tableau de bord{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Bienvenue, {{ current_user.nom }}</h1><p class="muted">Voici l'état de vos dons.</p></div>
+  <a class="btn btn-primary" href="{% url 'don_nouveau' %}">Publier un don</a></div>
+{% include "core/partials/stat_cards.html" %}
+<div class="card">
+  <div class="row-between"><h2>Mes derniers dons</h2><a href="{% url 'mes_dons' %}">Tout voir →</a></div>
+  <div class="list">
+    {% for d in recent %}
+      <div class="list-item"><div class="grow"><strong><a href="{% url 'don_detail' d.id %}">{{ d.titre }}</a></strong><small class="muted block">{{ d.ref }} · {{ d.date_publication|date:"d/m/Y" }}</small></div>
+        {{ d.statut|badge:"donation" }}</div>
+    {% empty %}<p class="empty">Vous n'avez pas encore publié de don.</p>{% endfor %}
+  </div>
+</div>
+{% endblock %}

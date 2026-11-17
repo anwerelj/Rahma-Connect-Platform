@@ -1,0 +1,8 @@
+<ol class="stepper">
+  {% for s in items %}
+  <li class="step {{ s.state }}">
+    <span class="dot">{% if s.state == 'done' %}✓{% else %}{{ s.number }}{% endif %}</span>
+    <span class="lbl">{{ s.label }}</span>
+  </li>
+  {% endfor %}
+</ol>

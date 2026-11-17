@@ -1,0 +1,25 @@
+﻿{% extends "core/common/base.html" %}
+{% block title %}Accueil{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <span class="eyebrow">La solidarité, simplement</span>
+    <h1>Un don utile,<br>au bon endroit.</h1>
+    <p>Rahma Connect relie les donateurs, les associations et les personnes qui ont besoin d'aide. Alimentation, vêtements, fournitures scolaires et matériel : chaque don peut faire la différence.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{% url 'register' %}">Participer</a>
+      <a class="btn btn-ghost" href="{% url 'login' %}">Se connecter</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Une action concrète</h2>
+  <p class="muted">Les dons sont orientés vers les associations et les bénéficiaires selon leurs besoins.</p>
+  <div class="stats">
+    <div class="stat"><div><strong>{{ impact.beneficiaires }}</strong><small>Bénéficiaires aidés</small></div></div>
+    <div class="stat"><div><strong>{{ impact.dons_redistribues }}</strong><small>Dons redistribués</small></div></div>
+    <div class="stat"><div><strong>{{ impact.repas_sauves }}</strong><small>Repas sauvés</small></div></div>
+  </div>
+</section>
+{% endblock %}

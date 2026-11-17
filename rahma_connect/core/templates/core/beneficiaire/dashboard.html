@@ -1,0 +1,14 @@
+﻿{% extends "core/common/base.html" %}
+{% block title %}Tableau de bord{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Bonjour, {{ current_user.nom }}</h1><p class="muted">Suivez vos demandes d'aide.</p></div>
+  <a class="btn btn-primary" href="{% url 'demande_nouvelle' %}">Nouvelle demande</a></div>
+{% include "core/partials/stat_cards.html" %}
+<div class="card">
+  <div class="row-between"><h2>Mes demandes récentes</h2><a href="{% url 'mes_demandes' %}">Tout voir →</a></div>
+  <div class="list">
+    {% for r in recent %}{% include "core/partials/request_row.html" %}
+    {% empty %}<p class="empty">Aucune demande pour le moment.</p>{% endfor %}
+  </div>
+</div>
+{% endblock %}

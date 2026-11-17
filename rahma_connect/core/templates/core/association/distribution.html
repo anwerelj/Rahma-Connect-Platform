@@ -1,0 +1,32 @@
+﻿{% extends "core/common/base.html" %}
+{% load ui %}
+{% block title %}Collecte et distribution{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Collecte et distribution</h1><p class="muted">Suivez chaque don : réservé → collecté → reçu → distribué.</p></div></div>
+<div class="board">
+  {% for col in columns %}
+  <section class="column">
+    <h3>{{ col.title }} <span class="pill">{{ col.items|length }}</span></h3>
+    {% for d in col.items %}
+      <div class="card mini">
+        <strong><a href="{% url 'don_detail' d.id %}">{{ d.titre }}</a></strong>
+        <small class="muted block">{{ d.localisation }} · {{ d.distance_km }} km</small>
+        <div class="actions">
+          {% if col.code == "RESERVE" %}
+            {% if d.reservation_confirmee %}
+              {% include "core/partials/status_button.html" with kind="mission" pk=d.id code="CREE" label="Créer une mission" cls="btn-soft" %}
+            {% else %}
+              <span class="muted small">En attente de confirmation du donateur</span>
+            {% endif %}
+          {% elif col.code == "COLLECTE" %}
+            {% include "core/partials/status_button.html" with kind="donation" pk=d.id code="RECU" label="Confirmer la réception" %}
+          {% elif col.code == "RECU" %}
+            {% include "core/partials/status_button.html" with kind="donation" pk=d.id code="DISTRIBUE" label="Distribuer" %}
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}<p class="empty small">Rien ici.</p>{% endfor %}
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}

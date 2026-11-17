@@ -1,0 +1,20 @@
+﻿{% extends "core/common/base.html" %}
+{% block title %}Stock{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Stock de l'association</h1><p class="muted">Quand le stock passe sous le minimum, la priorité du besoin augmente.</p></div></div>
+<div class="card table-wrap">
+  <table class="table">
+    <thead><tr><th>Ressource</th><th>Niveau</th><th>Actuel</th><th>Min</th><th>Max</th><th></th></tr></thead>
+    <tbody>
+    {% for s in items %}
+      <tr>
+        <td><strong>{{ s.nom }}</strong></td>
+        <td class="level-cell"><div class="bar-track"><div class="bar-fill {% if s.faible %}danger{% endif %}" style="width: {{ s.pourcent }}%"></div></div></td>
+        <td><strong>{{ s.quantite_actuelle }}</strong></td><td>{{ s.stock_min }}</td><td>{{ s.stock_max }}</td>
+        <td>{% if s.faible %}<span class="badge badge-red">Stock faible</span>{% else %}<span class="badge badge-green">OK</span>{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

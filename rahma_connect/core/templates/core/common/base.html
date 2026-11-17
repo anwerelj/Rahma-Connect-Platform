@@ -1,0 +1,120 @@
+{% load static %}<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Rahma Connect{% endblock %} · Rahma Connect</title>
+  <link rel="stylesheet" href="{% static 'core/css/style.css' %}?v=1.2">
+  <!--
+    Ce script s'exécute avant le premier rendu de la page.
+    Il applique le thème sauvegardé (ou la préférence système) pour éviter
+    le flash blanc au chargement en mode sombre.
+  -->
+  <script>
+    (function () {
+      var saved = "light";
+      try { saved = localStorage.getItem("rc-theme"); } catch (e) {}
+      if (!saved) {
+        saved = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-theme", saved);
+    })();
+  </script>
+</head>
+<body class="{% if role %}app{% else %}public{% endif %}">
+<div class="shell">
+
+  {% if role %}
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="{% url 'dashboard' %}">Rahma Connect</a>
+    <div class="who">
+      <div class="avatar">{{ current_user.nom|slice:":1" }}</div>
+      <div><strong>{{ current_user.nom }}</strong><small>{{ role_label }}</small></div>
+    </div>
+    <nav>
+      {% for item in menu %}
+        <a href="{% url item.url %}" class="{% if item.active %}active{% endif %}">
+          {{ item.label }}
+        </a>
+      {% endfor %}
+      {% if menu_extra %}
+        <p class="nav-title">Administration</p>
+        {% for item in menu_extra %}
+          <a href="{% url item.url %}" class="{% if item.active %}active{% endif %}">{{ item.label }}</a>
+        {% endfor %}
+      {% endif %}
+    </nav>
+    <a class="logout" href="{% url 'logout' %}">Déconnexion</a>
+  </aside>
+  {% endif %}
+
+  <div class="main">
+    {% if role %}
+    <header class="topbar">
+      <button class="menu-btn" id="menu-btn" aria-label="Menu">Menu</button>
+      <!-- "Rahma Connect" cliquable → ramène toujours au dashboard -->
+      <a class="topbar-brand" href="{% url 'dashboard' %}">Rahma Connect</a>
+      <!-- Menu notifications avec dropdown interactif -->
+      <div class="notif-wrapper" style="margin-inline-start:auto">
+        <button type="button" class="notif-btn" id="notif-btn" aria-label="Notifications" aria-expanded="false">
+          🔔
+          <span class="notif-badge" id="notif-badge">2</span>
+        </button>
+        <div class="notif-dropdown" id="notif-dropdown">
+          <div class="notif-header">
+            <strong>Notifications</strong>
+            <button type="button" class="notif-clear-btn" id="notif-clear">Tout marquer comme lu</button>
+          </div>
+          <div class="notif-list">
+            <div class="notif-item unread">
+              <span class="notif-dot"></span>
+              <div>
+                <p class="notif-text">Nouvelle réservation reçue pour votre don alimentaire.</p>
+                <small class="notif-time">Il y a 10 min</small>
+              </div>
+            </div>
+            <div class="notif-item unread">
+              <span class="notif-dot"></span>
+              <div>
+                <p class="notif-text">Votre demande de fournitures scolaires a été validée.</p>
+                <small class="notif-time">Il y a 2 heures</small>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div>
+                <p class="notif-text">Bienvenue sur Rahma Connect ! Votre compte est actif.</p>
+                <small class="notif-time">Hier</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="theme-btn" id="theme-btn" aria-label="Passer en mode sombre">🌙</button>
+    </header>
+    {% else %}
+    <header class="pubbar">
+      <a class="brand" href="{% url 'home' %}">Rahma Connect</a>
+      <nav>
+        <a href="{% url 'home' %}">Accueil</a>
+        <a href="{% url 'login' %}">Connexion</a>
+        <a class="btn btn-primary btn-sm" href="{% url 'register' %}">Inscription</a>
+        <button class="theme-btn" id="theme-btn" aria-label="Passer en mode sombre">🌙</button>
+      </nav>
+    </header>
+    {% endif %}
+
+    <main class="content">
+      {% if messages %}
+        <div class="flash-wrap">
+          {% for m in messages %}<div class="flash flash-{{ m.tags }}">{{ m.message }}</div>{% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">Rahma Connect © {% now "Y" %}</footer>
+  </div>
+</div>
+<script src="{% static 'core/js/app.js' %}?v=1.2"></script>
+</body>
+</html>

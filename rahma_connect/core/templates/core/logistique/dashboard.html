@@ -1,0 +1,18 @@
+﻿{% extends "core/common/base.html" %}
+{% load ui %}
+{% block title %}Tableau de bord{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Bonjour, {{ current_user.nom }}</h1><p class="muted">Vos missions de collecte et de livraison.</p></div>
+  <a class="btn btn-primary" href="{% url 'missions' %}">Voir les missions</a></div>
+{% include "core/partials/stat_cards.html" %}
+<div class="grid-2">
+  <div class="card"><h2>Missions en cours</h2><div class="list">
+    {% for m in recent %}
+      <div class="list-item"><div class="grow"><strong><a href="{% url 'mission_detail' m.id %}">Mission #{{ m.id }} · {{ m.don.titre }}</a></strong><small class="muted block">{{ m.point_collecte }} → {{ m.point_livraison }}</small></div>{{ m.statut|badge:"delivery" }}</div>
+    {% empty %}<p class="empty">Aucune mission en cours.</p>{% endfor %}</div></div>
+  <div class="card"><h2>Missions disponibles</h2><div class="list">
+    {% for m in open_missions %}
+      <div class="list-item"><div class="grow"><strong><a href="{% url 'mission_detail' m.id %}">{{ m.don.titre }}</a></strong><small class="muted block">{{ m.point_collecte }} · {{ m.distance_km }} km</small></div><a class="btn btn-soft btn-sm" href="{% url 'mission_detail' m.id %}">Consulter</a></div>
+    {% empty %}<p class="empty">Pas de nouvelle mission.</p>{% endfor %}</div></div>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+<form method="post" action="{% url 'change_status' %}" class="inline-form">
+  {% csrf_token %}
+  <input type="hidden" name="kind"  value="{{ kind }}">
+  <input type="hidden" name="pk"    value="{{ pk }}">
+  <input type="hidden" name="code"  value="{{ code }}">
+  <input type="hidden" name="next"  value="{{ request.get_full_path }}">
+  <button type="submit" class="btn {{ cls|default:'btn-primary' }} btn-sm">
+    {{ label }}
+  </button>
+</form>

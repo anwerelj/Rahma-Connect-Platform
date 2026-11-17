@@ -1,0 +1,18 @@
+﻿{% extends "core/common/base.html" %}
+{% block title %}Inscription{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="card auth-card wide">
+    <h1>Créer un compte</h1>
+    <p class="muted">Choisissez votre rôle : donateur, association, bénéficiaire ou partenaire logistique.</p>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="grid-2">
+        {% for field in form %}{% include "core/partials/field.html" %}{% endfor %}
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">S'inscrire</button>
+    </form>
+    <p class="muted center">Déjà inscrit ? <a href="{% url 'login' %}">Connexion</a></p>
+  </div>
+</div>
+{% endblock %}

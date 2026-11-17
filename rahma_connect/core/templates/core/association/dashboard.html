@@ -1,0 +1,16 @@
+﻿{% extends "core/common/base.html" %}
+{% load ui %}
+{% block title %}Tableau de bord{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{{ current_user.nom }}</h1><p class="muted">Vue d'ensemble : besoins, dons, stock et demandes.</p></div>
+  <a class="btn btn-primary" href="{% url 'asso_demandes' %}">Examiner les demandes</a></div>
+{% include "core/partials/stat_cards.html" %}
+<div class="card">
+  <div class="row-between"><h2>Demandes en attente</h2><a href="{% url 'asso_demandes' %}">Voir les demandes</a></div>
+  <div class="list">{% for r in pending %}{% include "core/partials/request_row.html" %}{% empty %}<p class="empty">Aucune demande en attente.</p>{% endfor %}</div>
+</div>
+<div class="card">
+  <div class="row-between"><h2>Dons disponibles</h2><a href="{% url 'dons_liste' %}">Voir les dons</a></div>
+  <div class="cards">{% for d in available %}{% include "core/partials/donation_card.html" %}{% endfor %}</div>
+</div>
+{% endblock %}

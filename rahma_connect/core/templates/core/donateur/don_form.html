@@ -1,0 +1,12 @@
+﻿{% extends "core/common/base.html" %}
+{% block title %}Publier un don{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Publier un don</h1><p class="muted">Indiquez la catégorie, la quantité, l'état et la localisation.</p></div></div>
+<form class="card form-card" method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  <div class="grid-2">
+    {% for field in form %}{% include "core/partials/field.html" %}{% endfor %}
+  </div>
+  <div class="form-actions"><a class="btn btn-ghost" href="{% url 'mes_dons' %}">Annuler</a><button class="btn btn-primary" type="submit">Publier le don</button></div>
+</form>
+{% endblock %}

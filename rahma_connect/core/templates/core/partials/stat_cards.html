@@ -1,0 +1,10 @@
+<div class="stats">
+  {% for s in stats %}
+  <div class="stat">
+    <div>
+      <strong>{{ s.value }}</strong>
+      <small>{{ s.label }}</small>
+    </div>
+  </div>
+  {% endfor %}
+</div>

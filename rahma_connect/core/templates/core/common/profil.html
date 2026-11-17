@@ -1,0 +1,72 @@
+﻿{% extends "core/common/base.html" %}
+{% block title %}Mon profil{% endblock %}
+{% block content %}
+
+<div class="page-head">
+  <div>
+    <h1>Mon profil</h1>
+    <p class="muted">Modifiez vos informations personnelles.</p>
+  </div>
+</div>
+
+<div class="grid-2">
+
+  {# --- Carte infos actuelles (côté gauche) --- #}
+  <div class="card profile">
+    <div class="avatar big">{{ current_user.nom|slice:":1" }}</div>
+    <dl class="dl">
+      <dt>Nom</dt>      <dd>{{ current_user.nom }}</dd>
+      <dt>E-mail</dt>   <dd>{{ current_user.email }}</dd>
+      <dt>Téléphone</dt><dd>{{ current_user.telephone|default:"—" }}</dd>
+      <dt>Ville</dt>    <dd>{{ current_user.ville|default:"—" }}</dd>
+      <dt>Rôle</dt>     <dd>{{ role_label }}</dd>
+    </dl>
+  </div>
+
+  {# --- Formulaire de modification (côté droit) --- #}
+  <div class="card form-card">
+    <h2>Modifier mes informations</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      {# Infos de base #}
+      {% for field in form %}
+        {% if field.name in "nom,email,telephone,ville" %}
+          <div class="field {% if field.errors %}has-error{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% for err in field.errors %}<p class="err">{{ err }}</p>{% endfor %}
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      <hr>
+      <h3>Changer le mot de passe <span class="muted small">(facultatif)</span></h3>
+
+      {# Champs mot de passe #}
+      {% for field in form %}
+        {% if "mot_de_passe" in field.name or "confirmation" in field.name %}
+          <div class="field {% if field.errors %}has-error{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% for err in field.errors %}<p class="err">{{ err }}</p>{% endfor %}
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      {# Erreurs globales du formulaire #}
+      {% if form.non_field_errors %}
+        <div class="flash flash-error">
+          {% for err in form.non_field_errors %}{{ err }}{% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="form-actions">
+        <a class="btn btn-ghost" href="{% url 'dashboard' %}">Annuler</a>
+        <button class="btn btn-primary" type="submit">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

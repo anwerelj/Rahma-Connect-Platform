@@ -1,0 +1,29 @@
+﻿{% extends "core/common/base.html" %}
+{% load ui %}
+{% block title %}{{ req.titre }}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="crumb"><a href="javascript:history.back()">Retour</a></p><h1>{{ req.titre }}</h1><p class="muted">Demande #{{ req.id }} · {{ req.date_creation|date:"d/m/Y" }}</p></div>{{ req.statut|badge:"request" }}</div>
+{% if req.statut == "REFUSE" %}
+  <div class="flash flash-error">Cette demande a été refusée par l'association.</div>
+{% else %}
+  <div class="card">{% stepper "request" req.statut %}</div>
+{% endif %}
+<div class="card">
+  <h2>Détails de la demande</h2>
+  <p>{{ req.description }}</p>
+  <dl class="dl">
+    <dt>Bénéficiaire</dt><dd>{{ req.beneficiaire }}</dd>
+    <dt>Catégorie</dt><dd>{{ req.cat_nom }}</dd>
+    <dt>Quantité</dt><dd>{{ req.quantite }}</dd>
+    <dt>Motif</dt><dd>{{ req.motif }}</dd>
+    <dt>Urgence</dt><dd>{{ req.priorite|badge:"priority" }}</dd>
+    <dt>Localisation</dt><dd>{{ req.localisation }}</dd>
+  </dl>
+  <div class="actions">
+    {% if role == "beneficiaire" and req.statut == "EN_LIVRAISON" %}
+      {% include "core/partials/status_button.html" with kind="request" pk=req.id code="RECU" label="Confirmer la réception de l'aide" %}
+    {% endif %}
+    {% if role == "beneficiaire" and req.statut == "RECU" %}<span class="badge badge-purple">Aide reçue — merci !</span>{% endif %}
+  </div>
+</div>
+{% endblock %}

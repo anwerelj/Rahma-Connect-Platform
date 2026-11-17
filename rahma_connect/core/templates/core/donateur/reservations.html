@@ -1,0 +1,19 @@
+﻿{% extends "core/common/base.html" %}
+{% block title %}Réservations{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Réservations de mes dons</h1><p class="muted">Acceptez ou refusez les demandes des associations.</p></div></div>
+<div class="card list">
+  {% for r in items %}
+    <div class="list-item">
+      <div class="grow"><strong><a href="{% url 'don_detail' r.don.id %}">{{ r.don.titre }}</a></strong>
+        <small class="muted block">{{ r.association }} · {{ r.quantite }} unité(s) · {{ r.date|date:"d/m/Y" }}</small></div>
+      {% if r.statut == "EN_ATTENTE" %}
+        <span class="badge badge-amber">En attente de votre réponse</span>
+        {% include "core/partials/status_button.html" with kind="reservation" pk=r.id code="CONFIRMEE" label="Accepter" %}
+        {% include "core/partials/status_button.html" with kind="reservation" pk=r.id code="REFUSEE" label="Refuser" cls="btn-danger" %}
+      {% elif r.statut == "CONFIRMEE" %}<span class="badge badge-green">Confirmée</span>
+      {% else %}<span class="badge badge-red">Refusée</span>{% endif %}
+    </div>
+  {% empty %}<p class="empty">Aucune réservation.</p>{% endfor %}
+</div>
+{% endblock %}

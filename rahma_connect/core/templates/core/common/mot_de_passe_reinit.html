@@ -1,0 +1,23 @@
+{% extends "core/common/base.html" %}
+{% block title %}Nouveau mot de passe{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="card auth-card">
+    <h1>Nouveau mot de passe</h1>
+    <p class="muted small">Définissez votre nouveau mot de passe (au moins 8 caractères).</p>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="flash flash-error">{{ form.non_field_errors }}</div>
+      {% endif %}
+      {% for field in form %}
+        {% include "core/partials/field.html" %}
+      {% endfor %}
+      <button class="btn btn-primary btn-block" type="submit">Valider le nouveau mot de passe</button>
+    </form>
+    <p class="muted center small" style="margin-top: 1.2rem;">
+      <a href="{% url 'login' %}">← Retour à la connexion</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

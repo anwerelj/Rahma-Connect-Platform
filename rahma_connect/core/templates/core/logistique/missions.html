@@ -1,0 +1,25 @@
+﻿{% extends "core/common/base.html" %}
+{% load ui %}
+{% block title %}Missions{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Missions de livraison</h1><p class="muted">Consultez, acceptez et suivez vos missions.</p></div></div>
+<div class="chips">
+  <a class="chip {% if tab == 'dispo' %}on{% endif %}" href="?onglet=dispo">Disponibles</a>
+  <a class="chip {% if tab == 'mes' %}on{% endif %}" href="?onglet=mes">Mes missions</a>
+  <a class="chip {% if tab == 'terminees' %}on{% endif %}" href="?onglet=terminees">Terminées</a>
+</div>
+<div class="cards">
+  {% for m in missions %}
+  <article class="card">
+    <div class="row-between"><strong>Mission #{{ m.id }}</strong>{{ m.statut|badge:"delivery" }}</div>
+    <h3>{{ m.don.titre }}</h3>
+    <ul class="route">
+      <li><strong>Collecte :</strong> {{ m.point_collecte }}</li>
+      <li><strong>Livraison :</strong> {{ m.point_livraison }}</li>
+    </ul>
+    <p class="muted">{{ m.distance_km }} km · {{ m.type_livreur }}</p>
+    <a class="btn btn-primary btn-sm" href="{% url 'mission_detail' m.id %}">Ouvrir</a>
+  </article>
+  {% empty %}<p class="empty">Aucune mission dans cet onglet.</p>{% endfor %}
+</div>
+{% endblock %}

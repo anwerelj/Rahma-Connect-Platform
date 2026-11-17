@@ -1,0 +1,40 @@
+﻿{% extends "core/common/base.html" %}
+{% load ui %}
+{% block title %}Demandes à valider{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Demandes d'aide</h1><p class="muted">Une demande n'est active qu'après validation par une association.</p></div></div>
+
+<div class="card">
+  <h2>À examiner ({{ pending|length }})</h2>
+  <div class="list">
+  {% for r in pending %}
+    <div class="list-item">
+      <span class="tag">{{ r.cat_nom }}</span>
+      <div class="grow"><strong><a href="{% url 'demande_detail' r.id %}">{{ r.titre }}</a></strong>
+        <small class="muted block">{{ r.beneficiaire }} · {{ r.quantite }} × · Motif : {{ r.motif }}</small></div>
+      {{ r.priorite|badge:"priority" }}
+      {% include "core/partials/status_button.html" with kind="request" pk=r.id code="VALIDE" label="Valider" %}
+      {% include "core/partials/status_button.html" with kind="request" pk=r.id code="REFUSE" label="Refuser" cls="btn-danger" %}
+    </div>
+  {% empty %}<p class="empty">Aucune demande en attente.</p>{% endfor %}
+  </div>
+</div>
+
+<div class="card">
+  <h2>Validées — trouver un don ({{ validated|length }})</h2>
+  <div class="list">
+  {% for r in validated %}
+    <div class="list-item">
+      <span class="tag">{{ r.cat_nom }}</span>
+      <div class="grow"><strong><a href="{% url 'demande_detail' r.id %}">{{ r.titre }}</a></strong><small class="muted block">{{ r.beneficiaire }} · {{ r.quantite }} ×</small></div>
+      {{ r.priorite|badge:"priority" }} {{ r.statut|badge:"request" }}
+    </div>
+  {% empty %}<p class="empty">Aucune demande validée.</p>{% endfor %}
+  </div>
+</div>
+
+<div class="card">
+  <h2>Historique ({{ closed|length }})</h2>
+  <div class="list">{% for r in closed %}{% include "core/partials/request_row.html" %}{% empty %}<p class="empty">Rien pour l'instant.</p>{% endfor %}</div>
+</div>
+{% endblock %}

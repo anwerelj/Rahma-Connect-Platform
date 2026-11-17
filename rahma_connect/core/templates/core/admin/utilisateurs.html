@@ -1,0 +1,16 @@
+﻿{% extends "core/common/base.html" %}
+{% block title %}Utilisateurs{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1> Utilisateurs et rôles</h1><p class="muted">Gérer les comptes, les rôles et bloquer un compte si nécessaire.</p></div></div>
+<div class="card table-wrap">
+  <table class="table">
+    <thead><tr><th>Nom</th><th>E-mail</th><th>Rôle</th><th>Inscrit le</th><th>Statut</th></tr></thead>
+    <tbody>
+    {% for u in users %}
+      <tr><td><strong>{{ u.nom }}</strong></td><td>{{ u.email }}</td><td><span class="tag">{{ u.get_role_display }}</span></td><td>{{ u.date_inscription|date:"d/m/Y" }}</td>
+        <td>{% if u.actif %}<span class="badge badge-green">Actif</span>{% else %}<span class="badge badge-red">Bloqué</span>{% endif %}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
